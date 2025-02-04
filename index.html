@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.webp" type="image/x-icon" sizes="256x256"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+    <!-- script src="js/index.js"></script -->
+    <title>GEN6 Messenger</title>
+
+    <meta http-equiv="Cache-Control" content="no-cache">
+
+    <link type="text/css" href="css/style.css" rel="stylesheet" />
+    <link type="text/css" href="https://site.lleo.me/messager3/css/main.css" rel="stylesheet" />
+    <link type="text/css" href="https://site.lleo.me/messager3/js/inter.css" rel="stylesheet" />
+    <script src="https://site.lleo.me/messager3/DOT.js" defer></script>
+    <script src="https://site.lleo.me/messager3/m.js" defer></script>
+    <script src="https://site.lleo.me/messager3/libs.js" defer></script>
+    <script src="https://site.lleo.me/messager3/index.js" defer></script>
+    <script src="https://site.lleo.me/messager3/DESIGN.js" defer></script>
+    <script src="https://site.lleo.me/messager3/TEST.js" defer></script>
+    <script src="https://site.lleo.me/messager3/js/ipfs.js" defer></script>
+    <script src="https://site.lleo.me/messager3/js/IPFS.js" defer></script>
+    <script src="https://site.lleo.me/messager3/js/jszip.min.js" defer></script>
+    <script src="https://site.lleo.me/messager3/js/openpgp.min.js" defer></script>
+    <script src="https://site.lleo.me/messager3/js/bundle-polkadot-util.js" defer></script>
+    <script src="https://site.lleo.me/messager3/js/bundle-polkadot-util-crypto.js" defer></script>
+    <script src="https://site.lleo.me/messager3/js/bundle-polkadot-extension-dapp.js" defer></script>
+    <script src="https://site.lleo.me/messager3/js/bundle-polkadot-types.js" defer></script>
+    <script src="https://site.lleo.me/messager3/js/bundle-polkadot-api.js" defer></script>
+    <script src="https://site.lleo.me/messager3/js/bundle-polkadot-keyring.js" defer></script>
+</head>
+<body onload='TESTX(); INIT();'>
+
+<!-- немного старого -->
+<!-- test menu -->
+<div id='menu' style='background:#ccc; padding:5px; color:black; position:absolute;bottom:100px;right:100px;display:inline-block;border:1px solid #ccc;fint-size:10px;'></div>
+<!-- /test menu -->
+<div id='work' style='text-align:left;padding:20px;'>
+    <div style="display:flex; align-items:center; gap:20px;">
+            <div id='my_current_account'></div>
+    </div>
+    <div class='ll r' onclick="dom.toggle('log_console')">[console]</div>
+    <div id='log_console' class='log_console' style='display:none'></div>
+</div>
+<!-- /немного старого -->
+
+
+
+<!-- main window -->
+<div style='padding: 4vh 4vw;'>
+
+    <div id="top-menu" class="section">
+        <button id="menu-toggle" class="icon-button mobile">
+            <img src="images/menu.svg" alt="Menu" class="menu-icon">
+        </button>
+        <h1>G6 Messenger</h1>
+
+        <div id="user-info-btn" onclick="dom.toggle('user-info-block')"><img src="images/dots-logo.webp" class="menu-icon"></div>
+    </div>
+
+<!-- user info -->
+    <div id="user-info-block" style='display:none' class="bordered-block">
+        <div class="block-title flex-row-center">
+            <div class="user-avatar"><img src="images/dots-logo.webp"></div>
+            <div class="user-data">
+                <div class="user-name">Obiwan Kenobi <span class="user-email">(<a href="#">obiwan.kenobi@jediorder.com</a>)</span></div>
+                <div class="small-txt">g6B...BgP</div>
+            </div>
+        </div>
+        <div class="action-btns flex-row-center">
+            <button class="action-btn" onclick="G6.www_changeAcc();dom.off('user-info-block');">Switch</button>
+            <button class="action-btn" onclick="G6.www_identity();dom.off('user-info-block');">Edit</button>
+        </div>
+    </div>
+<!-- /user info -->
+
+    <div id="center-block" class="section">
+        <div id="left-menu" class="vsection">
+            <div id="mail-activity-stat" class="bordered-block">
+                <div class="block-title">
+                    <h3 onclick='PINGER.www_check()' style='cursor:pointer'>Mailbox</h3>
+                </div>
+                <ul class="activity-list menu-list">
+                    <li onclick="memli('show_inbox')"><span>Inbox</span><span class='N_inbox'></span> (<big><b class='N_new'></b></big>)</span></li>
+                    <li onclick="memli('show_outbox')"><span>Sent</span><span class='N_outbox'>48</span></li>
+                </ul>
+                <!-- это я не смогу подсчитать div class="activity-footer">
+                    <span>Total: </span>
+                    <span>60</span>
+                </div-->
+                <button class="action-btn-big icon-btn" onclick="UPLOAD.win()" id="new-msg-btn">Write</button>
+            </div>
+        </div>
+
+        <div id="main-block">
+            <div id="mailbox" class="section"></div>
+	</div>
+    </div>
+
+
+</div>
+<!-- main window -->
+
+
+<!----------------- DESIGN TEMPLATES --------------------->
+<div id='template' style='display:none'>
+
+<!-- POPUP WINDOW -->
+<div class='template' name='dialog'>
+    <div class="popup-overlay">
+        <div class="popup-window bg-{color}">
+            <button class="popup-close">X</button>
+            <h2>{header}</h2>
+	    <div class='dialog-content' style='text-align:left;'>{body}</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- MESSAGE VIEW WINDOW -->
+<div class='template' name='viewMessage'>
+
+  <div style='max-width:500px'>
+    <div class='br'>load: {#time.load}ms decrypt: {time.decrypt}ms unzip: {time.unzip}ms</div>
+
+    <div class='r'>FROM: {#FROM}</div>
+    <div class='r'>FROM_ADDR: {#FROM_ADDR}</div>
+    <div class='r'>TO: {#TO}</div>
+    {if(UNIXTIME):
+        <div class='r'>DATE HIS: {#DATE}</div>
+        <div class='r'>DATE MY: {#DATE_MY} (UnixTime: {#UNIXTIME})</div>
+    }
+
+        <div class='messagediv'>{#message}</div>
+
+    <div class='fn'>
+        <div>
+        {for(images):
+	<img src='{#url}' class='imgpre' onclick="UPLOAD.zipfilesView('{#name}')">
+        }
+        </div>
+
+        <div>
+        {for(files):
+	     <div class='uploadme mv0' onclick="UPLOAD.zipfilesDownload('{#name}')">&#128190;</div>
+	     <div class='fn_namea' onclick="UPLOAD.zipfilesView('{#x.name}')">
+	    <div alt='{#type}' class='typeicon'>{typece}</div>
+	        <div class='fn_name'>{#x.name}</div>
+	    </div>{#size}
+        }
+        </div>
+    </div>
+
+    {if(UNIXTIME):
+	<button class="action-btn-big btn-green" onclick='G6.answer(["{#FROM_ADDR}"          ], {FX.AD} )'>Answer</button>
+	<button class="action-btn-big btn-green" onclick='G6.answer(["{#FROM_ADDR}",{#TO_ARR}], {FX.AD} )'>Answer to All</button>
+    }
+
+  </div>
+
+</div>
+
+
+
+<!-- REGISTER FORM -->
+<div class='template' name='register_header'>Please identify yourself</div>
+<div class='template' name='register'>
+            <form id="identityForm" class="login-form">
+                <div class="form-field">
+                    <label for="display" class="required-label">Name:</label>
+                    <input type="text" name="display" maxlength="32" required>
+                </div>
+
+                <div class="form-field">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" maxlength="32">
+                </div>
+<!--
+                <div class="form-field">
+                    <label for="address">Address:</label>
+                    <input type="text" name="address" maxlength="32">
+		</div>
+
+                <div class="form-field">
+                    <label for="telephoneNumber">Mobile:</label>
+                    <input type="tel" name="telephoneNumber" maxlength="16">
+                </div>
+
+                <div class="form-field">
+                    <label for="bio">Bio:</label>
+                    <input type="text" name="bio" maxlength="32">
+                </div>
+
+                <div class="form-field">
+                    <label for="website">Website:</label>
+                    <input type="url" name="website" maxlength="32">
+                </div>
+
+                <div class="form-field">
+                    <label for="telegram">Telegram:</label>
+                    <input type="text" name="telegram" maxlength="32">
+                </div>
+
+                <div class="form-field">
+                    <label for="discord">Discord:</label>
+                    <input type="text" name="discord" maxlength="32">
+                </div>
+
+                <div class="form-field">
+                    <label for="linkedin">LinkedIn:</label>
+                    <input type="text" name="linkedin" maxlength="32">
+                </div>
+
+                <div class="form-field">
+                    <label for="instagram">Instagram:</label>
+                    <input type="text" name="instagram" maxlength="32">
+                </div>
+
+                <div class="form-field">
+                    <label for="medium">Medium:</label>
+                    <input type="text" name="medium" maxlength="32">
+                </div>
+
+                <div class="form-field">
+                    <label for="youtube">YouTube:</label>
+                    <input type="text" name="youtube" maxlength="32">
+                </div>
+
+                <div class="form-field">
+                    <label for="git">GitHub:</label>
+                    <input type="text" name="git" maxlength="32">
+                </div>
+
+                <div class="form-field">
+                    <label for="mastodon">Mastodon:</label>
+                    <input type="text" name="mastodon" maxlength="32">
+                </div>
+-->
+                <button type="submit" class="action-btn-big btn-green">Submit</button>
+            </form>
+</div>
+
+
+<!-- Window: please save your seed -->
+<div class='template' name='seed'>
+
+    Please save your seed:
+
+    <div style="padding:20px; border: 1px solid #ccc; border-radius:20px;font-size:16px;">
+	<span class='mv' onclick="cpbuf('{#seed}')">📋</span> {#seed}
+    </div>
+
+</div>
+
+<!-- Window: backup -->
+<div class='template' name='backup'>
+
+    <div class='r' onclick="cpbuf(this.innerHTML.replace(/<[^>]+>/g,''))">
+        <b>Account: </b> <tt>{#acc}</tt>
+        {if(seed):<hr><b>Seed:</b> <tt>{#seed}</tt>}
+        <hr><b>Private:</b><pre>{private}</pre>
+        <hr><b>Public:</b><pre>{public}</pre>
+    </div>
+
+</div>
+
+<!-- Friends list -->
+<div class='template' name='friends'>
+
+    {for(friends):
+        <div style="display:flex; align-items:center; gap:10px;">
+	    {www_acc}
+            <div class="mv" onclick="G6.www_Friends('{acc}','del')">❌</div>
+        </div>
+    }
+
+</div>
+
+<!-- Files list -->
+<div class='template' name='files'>
+
+    {for(files):
+	<div class='fn'>
+    	    <div class='delme mv0' onclick="UPLOAD.file_del('{#name}')">&#10060;</div>
+    	    <div class='fn_namea'>
+        	<div alt='{#type}' class='typeicon'>{typece}</div>
+        	<div class='fn_name'>{#name}</div>
+    	    </div>
+    	    {#size}
+	</div>
+    }
+
+</div>
+
+<!-- Change accounts -->
+<div class='template' name='change'>
+
+    {for(accounts):
+	<div style="display:flex; align-items:center; gap:10px;">
+    	    <div class='mv0' onclick="G6.delAcc('{acc}')">❌</div>
+    	    <div onclick="G6.selectAcc('{acc}');clean('changeacc');">{www_acc}</div>
+    	    {if(seed):<div class='mv0' onclick="G6.backupAcc('{acc}')">💾</div>}
+	</div>
+    }
+    <button class="action-btn-big btn-green" onclick="clean('changeacc'); G6.newAcc();">Create new</button>
+
+</div>
+
+<!-- ONE ACCOUNT FORM -->
+<div class='template' name='acc'>
+
+    <div class="acc_card">
+            <div>{identicon}</div>
+            <div class="acc_content">
+                <div class="acc_title">{#head}{if(email): <a href='mailto:{#email}'>{#email}</a>}</div>
+                <div class="acc_id">{#about}</div>
+	    </div>
+    </div>
+
+<!--
+    Я не знаю, как это применить, это не то, здесь нет поля about, а если его вставить, всё рассыпается:
+
+    <button class="bordered-button-dark flex-row-center">
+            <div class="user-avatar">{identicon}</div>
+            <div class="user-name">{#head}{if(email):  <span class="user-email">(<a href="#">{#email}</a>)</span>}</div>
+            <div class="acc_id">{#about}</div>
+    </button>
+-->
+</div>
+
+<!-- MESSAGE FORM -->
+<div class='template' name='message'>
+            <button class="action-btn" name="add_recipients">Add recipient</button>
+
+	    <!-- recipients list -->
+            <div id='freindZone'></div>
+	    <!-- /recipients list -->
+
+	    <!-- reply to: field -->
+            {if(reply):<div class='br replytext'>{#reply}</div><br>&nbsp;}
+	    <!-- /reply to: field -->
+
+            <form id="writeMsgForm" class="login-form">
+                <div class="form-field">
+                    <textarea name="new-msg-text" id="message" cols="30" rows="10" placeholder="Type your message here..."></textarea>
+                </div>
+                <div class="form-field" id="new-msg-btns-block">
+                    <div id="uploaded-files-list"></div>
+
+                    <div class="file-drop-zone icon-btn file-drop-zone bg-light">
+                        <p>Drag and drop files here or <span class="file-upload-trigger">click to upload</span></p>
+			<input name="zone" style='display:none' type="file" accept="*/*" multiple />
+                    </div>
+
+		    <!-- selected files -->
+	            <div class="fileplace"></div>
+		    <!-- /selected files -->
+
+                    <button type="submit" name="save" style='display:none' onclick='return false;' class="action-btn-big btn-green icon-btn">Send</button>
+                </div>
+            </form>
+</div>
+
+
+<div class='template' name='writeNew'>
+        <!-- address to -->
+        <div id='freindZone'></div>
+        <input type='button' name="add_recipients" value="Add recipients" />
+        <br>&nbsp;
+
+        {if(reply):<div class='br replytext'>{#reply}</div><br>&nbsp;}
+
+        <div><textarea class='textareaw' placeholder='text message'></textarea></div>
+
+        <div class='filezone'>
+            <img class="mv" src="img/download_2.svg" />
+        </div>
+
+        <div><input name="zone" style='display:none' type="file" accept="*/*" multiple /></div>
+
+        <div class="fileplace"></div>
+
+        <p><div><input type='button' name="save" style='display:none' value="Save" /></div>
+</div>
+
+
+<!-- RECIPIENT WINDOW -->
+<div class='template' name='recipient_header'>Select recipient</div>
+<div class='template' name='recipient'>
+    <div style="max-height: 75vh; overflow: auto; display: flex; flex-direction: column; gap: 5px;">
+    {for(recipients):
+            <button class="bordered-button-dark flex-row-center">
+                <div class="user-avatar"><img {src}="{#img}"></div>
+                <div class="user-name">{#name} <span class="user-email">(<a href="#">{#email}</a>)</span></div>
+            </button>
+    }
+    </div>
+</div>
+
+
+<!-- INBOX BLOCK -->
+<div class='template' name='inbox'>
+
+  <div class="bordered-block mailbox-block" id='inbox'>
+    <div class="block-title"><h3>Inbox</h3></div>
+    <div class="block-content">
+        <table class="mail-list" cellspacing="0" cellpadding="5">
+            <thead>
+
+                <tr>
+                    <th>Sender</th>
+                    <th>Message</th>
+                </tr>
+
+            </thead>
+            <tbody id='inbox_trs'>
+<!-- {for(messages): -->
+                <tr>
+                    <td>
+			<div style='white-space: nowrap;'><span style='font-size:22px;' class='mv0' onclick="UPLOAD.View('{#url}');">{if(read):✉}{noif(read):📧}</span> <span class='br'>{#date}</span></div>
+			<div>{#message.FROM}</div>
+			<div class='br'>{#message.FROM_A}</div>
+		    </td>
+                    <td onclick="UPLOAD.View('{#url}');">
+			{message.TEXT}
+			{noif(message.FROM):<span class='l'>[ open new mail ]</span>}
+			{if(message.FILES):<div class='r'>Files: {#message.FILES}</div>}
+		    </td>
+                </tr>
+<!-- } -->
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- OUTBOX BLOCK -->
+<div class='template' name='outbox' id='outbox'>
+
+  <div class="bordered-block mailbox-block">
+    <div class="block-title"><h3>Sent messages</h3></div>
+    <div class="block-content">
+        <table class="mail-list" cellspacing="0" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>To whom</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>[Alex Carter]</td>
+                    <td>Project Update: Milestone Reached</td>
+                </tr>
+                <tr>
+                    <td>[Sophia Martinez]</td>
+                    <td>Invitation to Collaboration</td>
+                </tr>
+                <tr>
+                    <td>[James Bennett]</td>
+                    <td>Follow-Up on Our Discussion</td>
+                </tr>
+                <tr>
+                    <td>[Olivia Reynolds]</td>
+                    <td>Proposal for Next Steps</td>
+                </tr>
+                <tr>
+                    <td>[Daniel Foster]</td>
+                    <td>Urgent: Feedback Required</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM WINDOW -->
+<div class='template' name='confirm_header'><div style='font-size:16px;width:400px;'>{#text}</div></div>
+<div class='template' name='confirm'>
+  <div style="padding:10px;text-align:center;width:100%;">
+    <button class='mv0' id="my-confirm-yes" style="
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+        padding: 10px 40px;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-right: 50px;
+    ">{yes}</button>
+    <button class='mv0' id="my-confirm-no" style="
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+        padding: 10px 40px;
+        background-color: #f44336;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    ">{no}</button>
+  </div>
+</div>
+
+
+
+</div>
+<!----------------- /DESIGN TEMPLATES --------------------->
+
+
+</body>
+</html>
